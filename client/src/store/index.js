@@ -322,11 +322,12 @@ function GlobalStoreContextProvider(props) {
             let response = await api.deletePlaylistById(id);
             if (response.data.success) {
                 store.loadIdNamePairs();
-                history.push("/");
+                store.history.push("/");
             }
         }
         processDelete(id);
     }
+
     store.deleteMarkedList = function() {
         store.deleteList(store.listIdMarkedForDeletion);
         store.hideModals();
