@@ -27,7 +27,7 @@ export default function MUIRemoveSongModal() {
         store.hideModals();
     }
     
-    let modalClass = "modal";
+    let modalClass = "modal-dialog";
     if (store.isRemoveSongModalOpen()) {
         modalClass += " is-visible";
     }
@@ -38,7 +38,7 @@ export default function MUIRemoveSongModal() {
 
     return (
         <Modal
-            open={store.currentSong !== null}
+            open={store.listMarkedForDeletion === null}
         >
             <Box sx={style}>
             <div
