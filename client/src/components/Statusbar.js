@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import { Typography } from '@mui/material'
 
+
 /*
     Our Status bar React component goes at the bottom of our UI.
     
@@ -14,7 +15,7 @@ function Statusbar() {
         text = store.currentList.name;
     return (
         <div id="playlister-statusbar">
-            <Typography variant="h4">{text}</Typography>
+             {text}
         </div>
     );
 }

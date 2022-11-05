@@ -323,7 +323,7 @@ function GlobalStoreContextProvider(props) {
             let response = await api.deletePlaylistById(id);
             if (response.data.success) {
                 store.loadIdNamePairs();
-                store.history.push("/");
+                //store.history.push("/");
             }
         }
         processDelete(id);

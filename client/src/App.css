@@ -28,6 +28,8 @@ body {
   left: 10%;
   height: 90%;
   top: 5%;
+  grid-template-columns: 70% 30%;
+  grid-template-rows: 10% 80% 10%;
 }
 
 #app-root {
@@ -74,6 +76,20 @@ body {
   float: right;
 }
 
+#playlister-statusbar {
+  left: 10%;
+  top: 90%;
+  width: 80%;
+  height: 10%;
+  background-color: #e1e4cb;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36pt;
+  padding-top: 4px;
+  position: fixed;
+}
+
 .top5-button,
 .top5-button-disabled {
   font-size: 36pt;
@@ -118,7 +134,7 @@ body {
   top: 90%;
   width: 100%;
   height: 10%;
-  background-color: lightsalmon;
+  background-color:lightsalmon;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,7 +164,7 @@ body {
   left: 0%;
   top: 10%;
   width: 100%;
-  height: 90%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -189,6 +205,7 @@ body {
 .list-card-button {
   float: right;
   transform: scale(2);
+  font-size: 10pt;
 }
 
 #workspace-home,
@@ -334,7 +351,9 @@ input {
 }
 
 #close-modal-button {
+  font-size: 20pt;
   float: right;
+  transform: scale(2)
 }
 
 #confirm-cancel-container {
