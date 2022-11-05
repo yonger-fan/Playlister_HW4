@@ -7,7 +7,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box'
+import Box from '@mui/material/Box';
+import AppBanner from './AppBanner';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -15,6 +16,7 @@ import Box from '@mui/material/Box'
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    let appBanner = <AppBanner />
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -48,8 +50,8 @@ const HomeScreen = () => {
                 onClick={handleCreateNewList}
             >
                 <AddIcon />
-            </Fab>
-                <Typography variant="h2">Your Lists</Typography>
+                </Fab>
+                <Typography variant="h4">Your Lists </Typography>
             </div>
             <div id="list-selector-list">
                 {
