@@ -12,9 +12,15 @@ import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import MUIRegisterErrorModal from './MUIRegisterErrorModal';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
+
+    let modalJSX = "";
+    if (auth.isRegisterModalOpen()) {
+        modalJSX = <MUIRegisterErrorModal />;
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -119,6 +125,7 @@ export default function RegisterScreen() {
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
+                { modalJSX }
             </Container>
     );
 }

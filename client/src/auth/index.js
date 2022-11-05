@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom'
-import api from './auth-request-api'
+import { useHistory } from 'react-router-dom';
+import api from './auth-request-api';
+import Alert from '@mui/material/Alert'
 
 const AuthContext = createContext();
 console.log("create AuthContext: " + AuthContext);
@@ -10,13 +11,23 @@ export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    LOGIN_USER_ERROR: "LOGIN_USER_ERROR",
+    REGISTER_USER_ERROR: "REGISTER_USER_ERROR"
+}
+
+const CurrentModal = {
+    NONE : "NONE",
+    LOGIN_USER_ERROR: "LOGIN_USER_ERROR",
+    REGISTER_USER_ERROR: "REGISTER_USER_ERROR"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
+        currentModal : CurrentModal.NONE,
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        message: null
     });
     const history = useHistory();
 
@@ -51,6 +62,32 @@ function AuthContextProvider(props) {
                     loggedIn: true
                 })
             }
+            case AuthActionType.LOGIN_USER_ERROR: {
+                return setAuth({
+                    currentModal : CurrentModal.LOGIN_USER_ERROR,
+                    user: null,
+                    loggedIn: false,
+                    message: payload.errorMessage
+                })
+            }
+
+            case AuthActionType.REGISTER_USER_ERROR: {
+                return setAuth({
+                    currentModal : CurrentModal.REGISTER_USER_ERROR,
+                    user: null,
+                    loggedIn: false,
+                    message: payload.errorMessage
+                })
+            }
+
+            case AuthActionType.HIDE_MODALS: {
+                return setAuth({
+                    currentModal : CurrentModal.NONE,
+                    user: null,
+                    loggedIn: false
+                });
+            }
+
             default:
                 return auth;
         }
@@ -70,7 +107,8 @@ function AuthContextProvider(props) {
     }
 
     auth.registerUser = async function(firstName, lastName, email, password, passwordVerify) {
-        const response = await api.registerUser(firstName, lastName, email, password, passwordVerify);      
+        try {
+            const response = await api.registerUser(firstName, lastName, email, password, passwordVerify);      
         if (response.status === 200) {
             authReducer({
                 type: AuthActionType.REGISTER_USER,
@@ -79,19 +117,40 @@ function AuthContextProvider(props) {
                 }
             })
             history.push("/");
+        } 
+        } catch (error) {
+            const message = error.response.data.errorMessage;
+            console.log (message);
+            authReducer({
+                type: AuthActionType.REGISTER_USER_ERROR,
+                payload: {
+                    errorMessage: message
+                }
+            })
         }
     }
 
     auth.loginUser = async function(email, password) {
-        const response = await api.loginUser(email, password);
-        if (response.status === 200) {
+        try {
+           const response = await api.loginUser(email, password);
+           if (response.status === 200) {
+               authReducer({
+                   type: AuthActionType.LOGIN_USER,
+                   payload: {
+                       user: response.data.user
+                   }
+               })
+               history.push("/");
+           } 
+        } catch (error) {
+            const message = error.response.data.errorMessage;
+            console.log (message);
             authReducer({
-                type: AuthActionType.LOGIN_USER,
+                type: AuthActionType.LOGIN_USER_ERROR,
                 payload: {
-                    user: response.data.user
+                    errorMessage: message
                 }
             })
-            history.push("/");
         }
     }
 
@@ -115,6 +174,22 @@ function AuthContextProvider(props) {
         console.log("user initials: " + initials);
         return initials;
     }
+
+    auth.isLoginModalOpen = () => {
+        return auth.currentModal === CurrentModal.LOGIN_USER_ERROR;
+    }
+
+    auth.isRegisterModalOpen = () => {
+        return auth.currentModal === CurrentModal.REGISTER_USER_ERROR;
+    }
+
+    auth.hideModals = () => {
+        authReducer({
+            type: AuthActionType.HIDE_MODALS,
+            payload: {}
+        });    
+    }
+
 
     return (
         <AuthContext.Provider value={{
