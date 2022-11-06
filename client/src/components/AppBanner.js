@@ -114,6 +114,7 @@ export default function AppBanner() {
                             aria-haspopup="true"
                             onClick={handleProfileMenuOpen}
                             color="inherit"
+                            disabled = {store.isEditListName2()}
                         >
                             { getAccountMenu(auth.loggedIn) }
                         </IconButton>

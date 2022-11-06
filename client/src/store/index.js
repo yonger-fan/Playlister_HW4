@@ -78,7 +78,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload.idNamePairs,
-                    currentList: payload.playlist,
+                    currentList: null,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -360,6 +360,7 @@ function GlobalStoreContextProvider(props) {
             payload: {isEdition: false, isDeleting: false}
         });    
     }
+
     store.isDeleteListModalOpen = () => {
         return store.currentModal === CurrentModal.DELETE_LIST;
     }
@@ -368,6 +369,15 @@ function GlobalStoreContextProvider(props) {
     }
     store.isRemoveSongModalOpen = () => {
         return store.currentModal === CurrentModal.REMOVE_SONG;
+    }
+
+    store.isEditListName = () => {
+        return store.listNameActive === true || store.isDeleteListModalOpen() === true;
+    }
+
+    store.isEditListName2 = () => {
+        return store.listNameActive === true || store.isDeleteListModalOpen() === true 
+        || store.isEditSongModalOpen () === true || store.isRemoveSongModalOpen() === true;
     }
 
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
