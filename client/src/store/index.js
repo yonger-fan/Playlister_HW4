@@ -56,7 +56,9 @@ function GlobalStoreContextProvider(props) {
         newListCounter: 0,
         listNameActive: false,
         listIdMarkedForDeletion: null,
-        listMarkedForDeletion: null
+        listMarkedForDeletion: null,
+        isEdition: false,
+        isDeleting: false
     });
     const history = useHistory();
 
@@ -138,7 +140,7 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: payload.id,
-                    listMarkedForDeletion: payload.playlist
+                    listMarkedForDeletion: payload.playlist,
                 });
             }
             // UPDATE A LIST
@@ -180,7 +182,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    isEdition: payload.isEdition
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -193,7 +196,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    isDeleting: payload.isDeleting
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -206,7 +210,9 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    isEdition: payload.isEdition,
+                    isDeleting: payload.isDeleting
                 });
             }
             default:
@@ -339,19 +345,19 @@ function GlobalStoreContextProvider(props) {
     store.showEditSongModal = (songIndex, songToEdit) => {
         storeReducer({
             type: GlobalStoreActionType.EDIT_SONG,
-            payload: {currentSongIndex: songIndex, currentSong: songToEdit}
+            payload: {currentSongIndex: songIndex, currentSong: songToEdit, isEdition: true}
         });        
     }
     store.showRemoveSongModal = (songIndex, songToRemove) => {
         storeReducer({
             type: GlobalStoreActionType.REMOVE_SONG,
-            payload: {currentSongIndex: songIndex, currentSong: songToRemove}
+            payload: {currentSongIndex: songIndex, currentSong: songToRemove, isDeleting: true}
         });        
     }
     store.hideModals = () => {
         storeReducer({
             type: GlobalStoreActionType.HIDE_MODALS,
-            payload: {}
+            payload: {isEdition: false, isDeleting: false}
         });    
     }
     store.isDeleteListModalOpen = () => {
@@ -490,6 +496,7 @@ function GlobalStoreContextProvider(props) {
                 storeReducer({
                     type: GlobalStoreActionType.SET_CURRENT_LIST,
                     payload: store.currentList
+
                 });
             }
         }

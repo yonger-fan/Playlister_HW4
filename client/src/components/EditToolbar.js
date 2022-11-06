@@ -27,31 +27,50 @@ function EditToolbar() {
     function handleClose() {
         store.closeCurrentList();
     }
+    let canAddNewSong = store.canAddNewSong();
+    let canUndo = store.canUndo();
+    let canRedo = store.canRedo();
+    let canClose = store.canClose();
+
+    if (store.isEdition) {
+        canAddNewSong = false;
+        canUndo = false;
+        canRedo = false;
+        canClose = false;
+    }
+
+    if (store.isDeleting) {
+        canAddNewSong = false;
+        canUndo = false;
+        canRedo = false;
+        canClose = false;
+    }
+
     return (
         <div id="edit-toolbar">
             <Button
-                disabled={!store.canAddNewSong()}
+                disabled={!canAddNewSong}
                 id='add-song-button'
                 onClick={handleAddNewSong}
                 variant="contained">
                 <AddIcon />
             </Button>
             <Button 
-                disabled={!store.canUndo()}
+                disabled={!canUndo}
                 id='undo-button'
                 onClick={handleUndo}
                 variant="contained">
                     <UndoIcon />
             </Button>
             <Button 
-                disabled={!store.canRedo()}
+                disabled={!canRedo}
                 id='redo-button'
                 onClick={handleRedo}
                 variant="contained">
                     <RedoIcon />
             </Button>
             <Button 
-                disabled={!store.canClose()}
+                disabled={!canClose}
                 id='close-button'
                 onClick={handleClose}
                 variant="contained">

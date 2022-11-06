@@ -278,6 +278,12 @@ input {
   color: var(--swatch-neutral);
 }
 
+.playlister-button-disabled {
+  cursor: not-allowed;
+  background-color: lightgray;
+  pointer-events: none;
+}
+
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 
 .modal {
